@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Azundu Exchange — Cross-border payments from Onitsha</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#F3EEE0;
+    --panel:#EAE2CC;
+    --panel-2:#E2DAC0;
+    --line: rgba(20,36,28,0.14);
+    --line-strong: rgba(20,36,28,0.26);
+    --gold:#7C5E22;
+    --gold-bright:#C9A857;
+    --paper:#16241D;
+    --muted: rgba(22,36,29,0.62);
+    --green:#3E5C42;
+    --blue:#35506B;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation:none !important; transition:none !important;}
+  }
+  body{
+    margin:0;
+    background:var(--ink);
+    color:var(--paper);
+    font-family:'Inter', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+  a{color:inherit;}
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--gold);
+    outline-offset:3px;
+  }
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 28px;
+  }
+
+  /* ---------- header ---------- */
+  header{
+    position:sticky;
+    top:0;
+    z-index:50;
+    padding:18px 0;
+    background:var(--ink);
+    border-bottom:1px solid var(--line);
+  }
+  .header-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+  .brand{
+    display:flex;
+    align-items:baseline;
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:0.02em;
+  }
+  .brand .primary{
+    font-size:1.7rem;
+    color:var(--gold);
+  }
+  .brand .secondary{
+    font-size:1.7rem;
+    color:var(--blue);
+    margin-left:8px;
+  }
+  @media (max-width:480px){
+    .brand .primary, .brand .secondary{ font-size:1.3rem; }
+  }
+  .brand small{
+    font-family:'Inter', sans-serif;
+    font-weight:500;
+    font-size:0.62rem;
+    color:var(--muted);
+    letter-spacing:0.04em;
+  }
+  .header-links{
+    display:flex;
+    gap:22px;
+    font-size:0.92rem;
+  }
+  .header-links a{ text-decoration:none; color:var(--muted); }
+  .header-links a:hover{ color:var(--paper); }
+  @media (max-width:640px){ .header-links{display:none;} }
+
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative;
+    padding:88px 0 64px;
+    overflow:hidden;
+    background:var(--paper);
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1.1fr 0.9fr;
+    gap:40px;
+    align-items:center;
+    position:relative;
+    z-index:2;
+  }
+  @media (max-width:860px){
+    .hero-grid{grid-template-columns:1fr;}
+  }
+  .hero h1{
+    font-size:clamp(2.3rem, 5vw, 3.4rem);
+    line-height:1.06;
+    color:var(--ink);
+  }
+  .hero p.lede{
+    margin:22px 0 0;
+    max-width:46ch;
+    color:rgba(243,238,224,0.72);
+    font-size:1.08rem;
+    line-height:1.6;
+  }
+  .cta-row{
+    display:flex;
+    gap:14px;
+    margin-top:34px;
+    flex-wrap:wrap;
+  }
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:13px 22px;
+    border-radius:3px;
+    font-size:0.95rem;
+    font-weight:500;
+    text-decoration:none;
+    border:1px solid transparent;
+    cursor:pointer;
+  }
+  .btn-primary{
+    background:var(--gold-bright);
+    color:var(--paper);
+  }
+  .btn-primary:hover{ background:#d8bc74; }
+  .btn-ghost{
+    border-color: rgba(243,238,224,0.35);
+    color:var(--ink);
+    background:transparent;
+  }
+  .btn-ghost:hover{ border-color:var(--gold-bright); }
+
+  .hero-art{
+    position:relative;
+    aspect-ratio:1/1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .hero-art svg{ width:100%; height:100%; max-width:380px; }
+
+  /* faint backdrop routes */
+  .hero::before{
+    content:"";
+    position:absolute;
+    inset:-20% -10% auto auto;
+    width:60%;
+    height:140%;
+    background:radial-gradient(circle at 70% 30%, rgba(201,168,87,0.18), transparent 60%);
+    z-index:1;
+  }
+
+  /* ---------- currency strip ---------- */
+  .strip{
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    background:var(--panel-2);
+    padding:30px 0;
+  }
+  .strip-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    margin-bottom:22px;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .strip-head h2{
+    font-size:1.15rem;
+    color:var(--paper);
+  }
+  .strip-head span{
+    color:var(--muted);
+    font-size:0.88rem;
+  }
+  .coins{
+    display:flex;
+    gap:34px;
+    flex-wrap:wrap;
+  }
+  .coin{
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
+  .coin-badge{
+    width:56px;
+    height:56px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:'Fraunces', serif;
+    font-size:1.35rem;
+    font-weight:600;
+    color:var(--ink);
+    border:2px solid rgba(20,36,28,0.15);
+    flex-shrink:0;
+  }
+  .coin-usd{ background:radial-gradient(circle at 35% 30%, #6C8B6E, #3E5C42); }
+  .coin-gbp{ background:radial-gradient(circle at 35% 30%, #5A7893, #35506B); }
+  .coin-eur{ background:radial-gradient(circle at 35% 30%, #B99A4E, #7C5E22); }
+  .coin-cfa{ background:radial-gradient(circle at 35% 30%, #9C5A45, #6E3626); }
+  .coin-name{ font-size:0.9rem; line-height:1.35; }
+  .coin-name strong{ display:block; color:var(--paper); font-weight:600; }
+  .coin-name span{ color:var(--muted); font-size:0.82rem; }
+
+  /* ---------- ledger services ---------- */
+  section.services{ padding:72px 0 56px; }
+  .section-head{ max-width:52ch; margin-bottom:36px; }
+  .section-head h2{ font-size:1.8rem; color:var(--paper); }
+  .section-head p{ color:var(--muted); margin-top:12px; line-height:1.6; }
+
+  .ledger{
+    border-top:1px solid var(--line-strong);
+  }
+  .ledger-row{
+    display:grid;
+    grid-template-columns:220px 1fr;
+    gap:24px;
+    padding:24px 0;
+    border-bottom:1px solid var(--line);
+  }
+  @media (max-width:700px){
+    .ledger-row{grid-template-columns:1fr;}
+  }
+  .ledger-row h3{
+    font-size:1.15rem;
+    color:var(--gold);
+    font-weight:500;
+  }
+  .ledger-row p{
+    margin:0;
+    color:var(--muted);
+    line-height:1.6;
+    max-width:56ch;
+  }
+
+  /* ---------- how it works ---------- */
+  section.steps{
+    background:var(--panel);
+    padding:64px 0;
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+  }
+  .steps-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:36px;
+    margin-top:36px;
+  }
+  @media (max-width:760px){
+    .steps-grid{ grid-template-columns:1fr; gap:28px; }
+  }
+  .step{
+    padding-left:0;
+  }
+  .step .num{
+    font-family:'Fraunces', serif;
+    font-size:0.95rem;
+    color:var(--gold);
+    border:1px solid var(--line-strong);
+    width:30px; height:30px;
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    margin-bottom:14px;
+  }
+  .step h3{ font-size:1.05rem; color:var(--paper); font-weight:500; margin-bottom:8px; }
+  .step p{ color:var(--muted); font-size:0.94rem; line-height:1.6; margin:0; max-width:34ch; }
+
+  /* ---------- locations / contact ---------- */
+  section.contact{ padding:72px 0; }
+  .contact-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:48px;
+  }
+  @media (max-width:760px){
+    .contact-grid{ grid-template-columns:1fr; gap:36px; }
+  }
+  .office{
+    border-top:1px solid var(--line-strong);
+    padding-top:18px;
+  }
+  .office h3{ font-size:1rem; color:var(--paper); font-weight:500; }
+  .office p{ color:var(--muted); margin:8px 0 0; line-height:1.55; font-size:0.94rem; }
+
+  .reach{
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    padding:30px;
+    border-radius:4px;
+  }
+  .reach h3{ font-size:1rem; color:var(--paper); font-weight:500; margin-bottom:18px; }
+  .reach-line{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:14px 0;
+    border-top:1px solid var(--line);
+    font-size:0.95rem;
+  }
+  .reach-line:first-of-type{ border-top:none; }
+  .reach-line span{ color:var(--muted); }
+  .reach-line a{ color:var(--gold); text-decoration:none; font-weight:500; }
+  .reach-line a:hover{ text-decoration:underline; }
+
+  /* ---------- footer ---------- */
+  footer{
+    border-top:1px solid var(--line);
+    padding:30px 0 40px;
+  }
+  .footer-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:12px;
+  }
+  .footer-row p{ margin:0; color:var(--muted); font-size:0.85rem; }
+  .footer-row .tag{
+    font-family:'Fraunces', serif;
+    color:var(--gold);
+    font-size:0.95rem;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap header-row">
+    <div class="brand"><span class="primary">Azundu</span><span class="secondary">Exchange</span></div>
+    <nav class="header-links">
+      <a href="#currencies">Currencies</a>
+      <a href="#services">Services</a>
+      <a href="#offices">Offices</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <h1>Send it, receive it, trust it.</h1>
+      <p class="lede">Azundu Exchange moves dollars, pounds, euros and CFA between Onitsha and the rest of the world — a desk you can walk into, and a network that settles fast.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="tel:+2348037060768">Call the desk</a>
+        <a class="btn btn-ghost" href="https://wa.me/2348027312318">Message on WhatsApp</a>
+      </div>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <svg viewBox="0 0 200 200">
+        <circle cx="100" cy="100" r="78" fill="none" stroke="#C9A857" stroke-opacity="0.55" stroke-width="1"/>
+        <ellipse cx="100" cy="100" rx="78" ry="30" fill="none" stroke="#C9A857" stroke-opacity="0.38" stroke-width="1"/>
+        <ellipse cx="100" cy="100" rx="78" ry="55" fill="none" stroke="#C9A857" stroke-opacity="0.38" stroke-width="1"/>
+        <line x1="100" y1="22" x2="100" y2="178" stroke="#C9A857" stroke-opacity="0.38" stroke-width="1"/>
+        <line x1="22" y1="100" x2="178" y2="100" stroke="#C9A857" stroke-opacity="0.38" stroke-width="1"/>
+        <path d="M40 145 C 75 120, 120 165, 158 70" fill="none" stroke="#C9A857" stroke-width="2.4" stroke-linecap="round"/>
+        <path d="M148 78 L158 70 L163 82" fill="none" stroke="#C9A857" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<div class="strip" id="currencies">
+  <div class="wrap">
+    <div class="strip-head">
+      <h2>Currencies on the desk</h2>
+      <span>Cash and transfer, both directions</span>
+    </div>
+    <div class="coins">
+      <div class="coin">
+        <div class="coin-badge coin-usd">$</div>
+        <div class="coin-name"><strong>USD</strong><span>US Dollar</span></div>
+      </div>
+      <div class="coin">
+        <div class="coin-badge coin-gbp">£</div>
+        <div class="coin-name"><strong>GBP</strong><span>British Pound</span></div>
+      </div>
+      <div class="coin">
+        <div class="coin-badge coin-eur">€</div>
+        <div class="coin-name"><strong>EUR</strong><span>Euro</span></div>
+      </div>
+      <div class="coin">
+        <div class="coin-badge coin-cfa">¢FA</div>
+        <div class="coin-name"><strong>CFA</strong><span>West African Franc</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="services" id="services">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>What the desk handles</h2>
+      <p>Four things, done properly, rather than everything done loosely.</p>
+    </div>
+    <div class="ledger">
+      <div class="ledger-row">
+        <h3>Transfer made easy</h3>
+        <p>Walk in with cash or send a bank transfer — either way, your money moves without queues or paperwork you don't understand.</p>
+      </div>
+      <div class="ledger-row">
+        <h3>Direct global network</h3>
+        <p>Correspondent relationships built for cross-border trade, so your funds don't pass through layers of intermediary banks.</p>
+      </div>
+      <div class="ledger-row">
+        <h3>Cross-border payment solution</h3>
+        <p>Pay a supplier abroad or collect from a customer overseas, settled in the currency your trade actually runs on.</p>
+      </div>
+      <div class="ledger-row">
+        <h3>Fast and reliable</h3>
+        <p>Same-day settlement on major routes, and someone on the phone who can tell you exactly where your transfer stands.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="steps">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>How a transfer works</h2>
+    </div>
+    <div class="steps-grid">
+      <div class="step">
+        <div class="num">1</div>
+        <h3>Tell us the route</h3>
+        <p>Currency, amount, and where it's going — by phone, WhatsApp, or in person.</p>
+      </div>
+      <div class="step">
+        <div class="num">2</div>
+        <h3>We confirm the rate</h3>
+        <p>You know exactly what you're getting before you commit any money.</p>
+      </div>
+      <div class="step">
+        <div class="num">3</div>
+        <h3>Funds move</h3>
+        <p>Cash, transfer, or pickup at either office — your choice.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="offices">
+  <div class="wrap contact-grid">
+    <div>
+      <div class="section-head" style="margin-bottom:20px;">
+        <h2>Our offices</h2>
+      </div>
+      <div class="office">
+        <h3>Head office</h3>
+        <p>53 Bida Road, Onitsha, Anambra State, Nigeria.</p>
+      </div>
+      <div class="office">
+        <h3>Main market branch</h3>
+        <p>R2/639 Decent Line, Main Market, Onitsha, Anambra State, Nigeria.</p>
+      </div>
+    </div>
+    <div class="reach">
+      <h3>Reach the desk</h3>
+      <div class="reach-line">
+        <span>Phone</span>
+        <a href="tel:+2348037060768">0803 706 0768</a>
+      </div>
+      <div class="reach-line">
+        <span>WhatsApp</span>
+        <a href="https://wa.me/2348027312318">+234 802 731 2318</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-row">
+    <p class="tag">Your trust, our priority — connecting you globally.</p>
+    <p>© 2026 Azundu Exchange. Onitsha, Nigeria.</p>
+  </div>
+</footer>
+
+</body>
+</html>
